@@ -5,7 +5,7 @@ This project is part of my learning Advanced Programming class (INT 2215 25) at 
 This is a game where a player try their best to avoid bullets emitted by a bot.
 
 ## Demo
-You can grab a demo or feature-complete release of this game at <https://github.com/laam-egg/Fireback/releases>. Just download the compressed file, extract it to an arbitary folder and run the executable.
+You can grab a demo or feature-complete release of this game at <https://github.com/laam-egg/Fireback/releases>. Just download the compressed file, extract it to an arbitary folder and run the executable file "Fireback.exe" under the "bin" folder.
 
 ## How to play  
 Coloring:  
