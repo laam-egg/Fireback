@@ -13,6 +13,8 @@
 
 
 // BEGIN COPIED CODE from https://gist.github.com/Gumichan01/332c26f6197a432db91cc4327fcabb1c
+// THIS COPIED CODE WILL BE REMOVED IN THE FUTURE
+// WHEN ENTITIES ARE RENDERED AS IMAGES.
 ////////////////////////////////////////////////////////////////////
 
 
