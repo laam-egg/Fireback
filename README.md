@@ -23,7 +23,7 @@ You, the player, aim to avoid bullets emitted by the bot as long as possible (to
 
 At first, you are given a number of bullets. The longer you endure, the more bullets you will be provided.
 
-The game will finish when one RED bullet collides the player.
+The game will finish when one RED bullet collides the player. (The BLUE bullets are friendly and have no effects on you).
 
 ## Implementation details
 Though the project makes heavy use of modern C++ features including OOP, the dominant model of the game is ECS (Entity-Component-System) where:
