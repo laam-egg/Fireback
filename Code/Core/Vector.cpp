@@ -74,3 +74,17 @@ void Vector::rotate(Scalar a) {
 	x = X * cos(a) - Y * sin(a);
 	y = Y * cos(a) + X * sin(a);
 }
+
+Scalar Vector::getAngleOfSlope() const {
+	if (x == 0) return 0; // not really, but suit our purpose.
+	if constexpr (std::is_same_v<Scalar, float>) {
+		return std::atan2f(y, x);
+	} else {
+		return std::atan2(y, x);
+	}
+}
+
+Vector getRotatedVector(Vector v, Scalar const& angle) {
+	v.rotate(angle);
+	return v;
+}

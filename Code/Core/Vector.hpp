@@ -29,10 +29,14 @@ public:
 	Scalar getModule() const;
 
 	void rotate(Scalar angle);
+
+	Scalar getAngleOfSlope() const;
 };
 
 inline Scalar abs(Vector const& v) {
 	return v.getModule();
 }
+
+Vector getRotatedVector(Vector v, Scalar const& angle);
 
 #endif // Vector_INCLUDED
