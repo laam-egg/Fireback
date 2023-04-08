@@ -12,6 +12,7 @@
 #include "Core/ECS/ECS.hpp"
 
 
+// BEGIN COPIED CODE from https://gist.github.com/Gumichan01/332c26f6197a432db91cc4327fcabb1c
 ////////////////////////////////////////////////////////////////////
 
 
@@ -105,6 +106,8 @@ SDL_RenderFillCircle(SDL_Renderer* renderer, int x, int y, int radius)
 	return status;
 }
 ////////////////////////////////////////////////////////////////////
+// END OF COPIED CODE.
+
 
 // VELOCITY UNIT: pixel per millisecond.
 
@@ -117,7 +120,7 @@ SDL_Rect gStatusAreaRect = { 0, 0, 640, 40 };
 bool gGameRunning = false;
 Scalar gAge = 0;
 Scalar gLastAgeMerit = 0;
-int gBulletsLeft = 1000;
+int gBulletsLeft = 500;
 int gLevel = 0;
 
 ////////////////////////
@@ -595,11 +598,9 @@ public:
 			}
 
 			if (m_k[SDL_SCANCODE_SPACE]) {
-				createBullet(tf.position, tf.rotation, EMITTER_PLAYER);
-				--gBulletsLeft;
-				if (gBulletsLeft <= 0) {
-					entitiesDeleteLater.insert(playerID);
-					continue;
+				if (gBulletsLeft > 0) {
+					createBullet(tf.position, tf.rotation, EMITTER_PLAYER);
+					--gBulletsLeft;
 				}
 			}
 #define MOVE_SPEED 0.3
