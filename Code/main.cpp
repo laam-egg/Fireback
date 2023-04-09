@@ -323,7 +323,7 @@ public:
 	static bool checkCollisionByTunneling(Vector & pos, Scalar radius, Vector velocity, Vector posOther) {
 		// Convention: uppercase: position of point (M, N, H) ; lowercase: vector (d).
 		Vector const& M = pos;
-		Vector const  N = M - velocity;
+		//Vector const  N = M - velocity;
 		Vector const& d = velocity;
 		Vector const& I = posOther;
 
@@ -387,7 +387,7 @@ public:
 			} else {
 				rbPtr = m_rbMock; // For entities without RigidBody component.
 			}
-			RigidBody const& rb = *rbPtr;
+			//RigidBody const& rb = *rbPtr;
 			Collider& cl = gEcs.getComponentDataOfEntityAsRef<Collider>(entityID);
 			cl.collidees.clear();
 			se.entityID = entityID;
@@ -520,8 +520,8 @@ public:
 				// Approximate: acceleration = delta(velocity) / dt
 				Vector v1_ = ((m1 - m2) * v1 + 2 * m2 * v2) / (m1 + m2);
 				Vector v2_ = (m1 * v1 + m2 * v2 - m1 * v1_) / m2;
-				Vector da1 = (v1_ - v1) / dt;
-				Vector da2 = (v2_ - v2) / dt;
+				// Vector da1 = (v1_ - v1) / dt;
+				// Vector da2 = (v2_ - v2) / dt;
 
 				// Do not use acceleration since it's hard to reset it later ; the collision just causes an impulse.
 				rb1.velocity = v1_; //rb1.acceleration += da1;
@@ -581,7 +581,7 @@ public:
 
 		for (EntityID const& playerID : entityIDs) {
 			Transform& tf = gEcs.getComponentDataOfEntityAsRef<Transform>(playerID);
-			Player& pl = gEcs.getComponentDataOfEntityAsRef<Player>(playerID);
+			// Player& pl = gEcs.getComponentDataOfEntityAsRef<Player>(playerID);
 			Collider& cl = gEcs.getComponentDataOfEntityAsRef<Collider>(playerID);
 
 			if (cl.isCollided()) {
@@ -632,7 +632,7 @@ public:
 
 	Vector findPositionOfNearestBot(Vector const& playerPosition, std::shared_ptr<ComponentDataArray<Bot>> const& botArrayPtr) {
 		Scalar nearestDistance = 0;
-		EntityID nearestID = 0;
+		//EntityID nearestID = 0;
 		Vector nearestPosition{};
 
 		size_t const numOfBots = botArrayPtr->getSize();
@@ -643,7 +643,7 @@ public:
 			Scalar botDistance = (botPosition - playerPosition).getModule();
 			if (i == 0 || botDistance < nearestDistance) {
 				nearestDistance = botDistance;
-				nearestID = botID;
+				//nearestID = botID;
 				nearestPosition = botPosition;
 			}
 		}
@@ -720,10 +720,6 @@ std::string formatAge(Scalar age) {
 	mins -= std::chrono::duration_cast<std::chrono::minutes>(hours);
 
 	std::stringstream ss;
-	auto H = hours.count();
-	auto M = mins.count();
-	auto S = secs.count();
-	auto MS = ms.count();
 	ss << std::setw(2) << std::setfill('0') << hours.count() << ":";
 	ss << std::setw(2) << std::setfill('0') << mins.count() << ":";
 	ss << std::setw(2) << std::setfill('0') << secs.count() << ".";
@@ -777,6 +773,9 @@ public:
 		case ALIGN_CENTER:
 			position.x -= size.x / 2;
 			break;
+
+        default:
+            break;
 		}
 
 		switch (verticalAlign) {
@@ -787,6 +786,9 @@ public:
 		case ALIGN_CENTER:
 			position.y -= size.y / 2;
 			break;
+
+        default:
+            break;
 		}
 		SDL_Rect fontDstRect = { static_cast<int>(position.x), static_cast<int>(position.y), fontSf->w, fontSf->h };
 		SDL_RenderCopy(m_renderer, fontTex, NULL, &fontDstRect);
@@ -825,7 +827,8 @@ public:
 		SDL_RenderSetViewport(m_renderer, &gPlaygroundRect);
 		for (EntityID const& entityID : entityIDs) {
 			Transform& tf = gEcs.getComponentDataOfEntityAsRef<Transform>(entityID);
-			Renderable& rd = gEcs.getComponentDataOfEntityAsRef<Renderable>(entityID);
+			// ATTENTION: Will use this variable in the near future
+			// Renderable& rd = gEcs.getComponentDataOfEntityAsRef<Renderable>(entityID);
 			if (gEcs.entityHasComponent<Bullet>(entityID)) {
 				Bullet& bl = gEcs.getComponentDataOfEntityAsRef<Bullet>(entityID);
 				if (bl.emitter == EMITTER_PLAYER) {
@@ -836,7 +839,7 @@ public:
 				}
 			}
 			if (gEcs.entityHasComponent<Player>(entityID)) {
-				Player& pl = gEcs.getComponentDataOfEntityAsRef<Player>(entityID);
+				//Player& pl = gEcs.getComponentDataOfEntityAsRef<Player>(entityID);
 				Vector direction(tf.radius, 0);
 				direction.rotate(tf.rotation);
 				Vector topLeft = tf.position - direction;
@@ -846,7 +849,7 @@ public:
 				SDL_SetRenderDrawColor(m_renderer, 0, 0, 255, 255);
 			}
 			if (gEcs.entityHasComponent<Bot>(entityID)) {
-				Bot& bo = gEcs.getComponentDataOfEntityAsRef<Bot>(entityID);
+				//Bot& bo = gEcs.getComponentDataOfEntityAsRef<Bot>(entityID);
 				Vector direction(tf.radius, 0);
 				direction.rotate(tf.rotation);
 				Vector topLeft = tf.position - direction;
