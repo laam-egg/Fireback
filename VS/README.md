@@ -14,6 +14,8 @@ Then, open the terminal and type:
 > vcpkg integrate install  
 
 ## Compile and run the program  
-1. Open the file Fireback.sln with Visual Studio first.
-2. Select desired configuration (Debug or Release).
-3. Build and/or Debug the program.
+1. Open the file ``Fireback.sln`` with Visual Studio first.  
+2. Select desired configuration (``Debug`` or ``Release``).  
+3. Build and/or Debug the program.  
+
+If ``Release`` is selected, after step 3, executables and all required DLLs will be outputted to ``{Fireback_ROOT}\bin`` directory, where ``{Fireback_ROOT}`` is the path to the root of the project. Such files, along with license and documentation files of the project, are enough to redistribute the game to end users.  
