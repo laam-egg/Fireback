@@ -257,10 +257,10 @@ public:
 	}
 
 private:
-	int const m_maxPosInspected = 100;
+	size_t const m_maxPosInspected = 100;
 	std::vector<std::pair<Scalar, int>> m_dist{};
 	bool m_reading{ false };
-	int m_readIndex{};
+	size_t m_readIndex{};
 };
 
 struct Bot {
@@ -337,7 +337,7 @@ public:
 
 		// ((H - I).getModule() is the distance between I and line MN, which
 		// will be less than entity1's radius if entity 1 has crossed entity2
-		// during displacement. 
+		// during displacement.
 		if ((H - I).getModule() < radius) {
 			// Of course return true, but to avoid flicker when the entity is
 			// misplaced, we modify the position a bit.
@@ -419,7 +419,7 @@ public:
 	}
 
 	void init() {
-		
+
 	}
 
 	void quit() {
@@ -960,7 +960,7 @@ extern "C" int main(int argc, char* argv[]) {
 		gEcs.addComponentToEntity(botID, Renderable());
 	}
 
-	// TTF_Font* 
+	// TTF_Font*
 
 	SDL_Event event;
 	Scalar dt = 0;
