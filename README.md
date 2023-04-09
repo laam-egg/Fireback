@@ -41,7 +41,7 @@ I relied predominantly on [this guide to ECS](https://austinmorlan.com/posts/ent
  - Play sound.
  - Load background image (or not).
  - Arrange Components and Systems as separate files instead of placing all of them in main.cpp.
- - Add CodeBlocks project file and CMakeLists.txt.
+ - Add CMakeLists.txt.
  - Resolve TODO entries in all header and source files.
 
 ## Third-party libraries
