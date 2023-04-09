@@ -5,7 +5,7 @@ To use these files you must have Code::Blocks installed on your machine.
 This project is checked to compile fine with Code::Blocks 20.03 (GCC MinGW-w64 8.1.0).  
 
 ## Setup third-party libraries
-To set up SDL2 and its plugin, you first have to download the following packages:  
+To set up SDL2 and its plugins, you first have to download the following packages:  
  - SDL2 package named ``SDL2-devel-X.Y.Z-mingw.zip`` from <https://github.com/libsdl-org/SDL/releases/latest> ;  
  - SDL2_image package named ``SDL2_image-devel-X.Y.Z-mingw.zip`` from <https://github.com/libsdl-org/SDL_image/releases/latest> ;  
  - SDL2_ttf package named ``SDL2_ttf-devel-X.Y.Z-mingw.zip`` from <https://github.com/libsdl-org/SDL_ttf/releases/latest> ;  

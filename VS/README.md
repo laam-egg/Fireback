@@ -1,7 +1,7 @@
 # Note on Visual Studio project files
 
 ## IDE  
-To use these files you must have Visual Studio installed on your local machine.  
+To use these files you must have Visual Studio installed on your machine.  
 This project is checked to compile fine with Visual Studio 2022.
 
 ## Setup third-party libraries  
@@ -14,6 +14,6 @@ Then, open the terminal and type:
 > vcpkg integrate install  
 
 ## Compile and run the program  
-1. Open the file Fireback.sln first.
+1. Open the file Fireback.sln with Visual Studio first.
 2. Select desired configuration (Debug or Release).
 3. Build and/or Debug the program.
