@@ -18,6 +18,26 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\Core\ECS\Signature.cpp" />
+    <ClCompile Include="..\src\Core\Entity\EntityIDManager.cpp" />
+    <ClCompile Include="..\src\Core\Exception.cpp" />
+    <ClCompile Include="..\src\Core\Vector.cpp" />
+    <ClCompile Include="..\src\main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\Core\Component\ComponentDataArray.hpp" />
+    <ClInclude Include="..\src\Core\Component\ComponentID.hpp" />
+    <ClInclude Include="..\src\Core\Component\ComponentManager.hpp" />
+    <ClInclude Include="..\src\Core\ECS\ECS.hpp" />
+    <ClInclude Include="..\src\Core\ECS\Signature.hpp" />
+    <ClInclude Include="..\src\Core\Entity\EntityID.hpp" />
+    <ClInclude Include="..\src\Core\Entity\EntityIDManager.hpp" />
+    <ClInclude Include="..\src\Core\Exception.hpp" />
+    <ClInclude Include="..\src\Core\System\BaseSystem.hpp" />
+    <ClInclude Include="..\src\Core\System\SystemManager.hpp" />
+    <ClInclude Include="..\src\Core\Vector.hpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -107,7 +127,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\Fireback\Code;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Fireback\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -124,7 +144,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>D:\Fireback\Code;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Fireback\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -133,26 +153,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="..\Code\Core\ECS\Signature.cpp" />
-    <ClCompile Include="..\Code\Core\Entity\EntityIDManager.cpp" />
-    <ClCompile Include="..\Code\Core\Exception.cpp" />
-    <ClCompile Include="..\Code\Core\Vector.cpp" />
-    <ClCompile Include="..\Code\main.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\Code\Core\Component\ComponentDataArray.hpp" />
-    <ClInclude Include="..\Code\Core\Component\ComponentID.hpp" />
-    <ClInclude Include="..\Code\Core\Component\ComponentManager.hpp" />
-    <ClInclude Include="..\Code\Core\ECS\ECS.hpp" />
-    <ClInclude Include="..\Code\Core\ECS\Signature.hpp" />
-    <ClInclude Include="..\Code\Core\Entity\EntityID.hpp" />
-    <ClInclude Include="..\Code\Core\Entity\EntityIDManager.hpp" />
-    <ClInclude Include="..\Code\Core\Exception.hpp" />
-    <ClInclude Include="..\Code\Core\System\BaseSystem.hpp" />
-    <ClInclude Include="..\Code\Core\System\SystemManager.hpp" />
-    <ClInclude Include="..\Code\Core\Vector.hpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

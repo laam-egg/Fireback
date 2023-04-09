@@ -15,54 +15,54 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Code\Core\Exception.cpp">
+    <ClCompile Include="..\src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Code\main.cpp">
+    <ClCompile Include="..\src\Core\Exception.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Code\Core\Entity\EntityIDManager.cpp">
+    <ClCompile Include="..\src\Core\Vector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Code\Core\ECS\Signature.cpp">
+    <ClCompile Include="..\src\Core\ECS\Signature.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Code\Core\Vector.cpp">
+    <ClCompile Include="..\src\Core\Entity\EntityIDManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Code\Core\Exception.hpp">
+    <ClInclude Include="..\src\Core\Exception.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Code\Core\Component\ComponentDataArray.hpp">
+    <ClInclude Include="..\src\Core\Vector.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Code\Core\Component\ComponentID.hpp">
+    <ClInclude Include="..\src\Core\Component\ComponentDataArray.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Code\Core\ECS\Signature.hpp">
+    <ClInclude Include="..\src\Core\Component\ComponentID.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Code\Core\Entity\EntityID.hpp">
+    <ClInclude Include="..\src\Core\Component\ComponentManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Code\Core\Entity\EntityIDManager.hpp">
+    <ClInclude Include="..\src\Core\ECS\ECS.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Code\Core\Component\ComponentManager.hpp">
+    <ClInclude Include="..\src\Core\ECS\Signature.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Code\Core\System\BaseSystem.hpp">
+    <ClInclude Include="..\src\Core\Entity\EntityID.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Code\Core\System\SystemManager.hpp">
+    <ClInclude Include="..\src\Core\Entity\EntityIDManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Code\Core\ECS\ECS.hpp">
+    <ClInclude Include="..\src\Core\System\BaseSystem.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Code\Core\Vector.hpp">
+    <ClInclude Include="..\src\Core\System\SystemManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

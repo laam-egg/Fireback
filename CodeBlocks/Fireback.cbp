@@ -33,7 +33,7 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-std=c++17" />
-			<Add directory="../code" />
+			<Add directory="../src" />
 		</Compiler>
 		<Linker>
 			<Add option="-static-libstdc++" />
@@ -49,22 +49,22 @@
 			<Add option="-lSDL2_mixer" />
 			<Add option="-lSDL2_mixer.dll" />
 		</Linker>
-		<Unit filename="../code/Core/Component/ComponentDataArray.hpp" />
-		<Unit filename="../code/Core/Component/ComponentID.hpp" />
-		<Unit filename="../code/Core/Component/ComponentManager.hpp" />
-		<Unit filename="../code/Core/ECS/ECS.hpp" />
-		<Unit filename="../code/Core/ECS/Signature.cpp" />
-		<Unit filename="../code/Core/ECS/Signature.hpp" />
-		<Unit filename="../code/Core/Entity/EntityID.hpp" />
-		<Unit filename="../code/Core/Entity/EntityIDManager.cpp" />
-		<Unit filename="../code/Core/Entity/EntityIDManager.hpp" />
-		<Unit filename="../code/Core/Exception.cpp" />
-		<Unit filename="../code/Core/Exception.hpp" />
-		<Unit filename="../code/Core/System/BaseSystem.hpp" />
-		<Unit filename="../code/Core/System/SystemManager.hpp" />
-		<Unit filename="../code/Core/Vector.cpp" />
-		<Unit filename="../code/Core/Vector.hpp" />
-		<Unit filename="../code/main.cpp" />
+		<Unit filename="../src/Core/Component/ComponentDataArray.hpp" />
+		<Unit filename="../src/Core/Component/ComponentID.hpp" />
+		<Unit filename="../src/Core/Component/ComponentManager.hpp" />
+		<Unit filename="../src/Core/ECS/ECS.hpp" />
+		<Unit filename="../src/Core/ECS/Signature.cpp" />
+		<Unit filename="../src/Core/ECS/Signature.hpp" />
+		<Unit filename="../src/Core/Entity/EntityID.hpp" />
+		<Unit filename="../src/Core/Entity/EntityIDManager.cpp" />
+		<Unit filename="../src/Core/Entity/EntityIDManager.hpp" />
+		<Unit filename="../src/Core/Exception.cpp" />
+		<Unit filename="../src/Core/Exception.hpp" />
+		<Unit filename="../src/Core/System/BaseSystem.hpp" />
+		<Unit filename="../src/Core/System/SystemManager.hpp" />
+		<Unit filename="../src/Core/Vector.cpp" />
+		<Unit filename="../src/Core/Vector.hpp" />
+		<Unit filename="../src/main.cpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>
