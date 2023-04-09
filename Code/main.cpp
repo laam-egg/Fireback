@@ -213,7 +213,7 @@ public:
 			throw Exception("Distribution already in read mode.");
 		}
 		std::sort(m_dist.begin(), m_dist.end());
-		int i, j;
+		size_t i, j;
 		size_t sz = m_dist.size();
 		int numOfBullets = 1;
 		for (i = 0, j = sz - 1; i <= j; ++i, --j) {
@@ -534,7 +534,7 @@ public:
 };
 
 void createBullet(Vector const& position, Scalar gunAngle, BulletEmitter bulletEmitter) {
-	Vector velocity(0.2, 0);
+	Vector velocity(0.2f, 0);
 	velocity.rotate(gunAngle);
 
 	EntityID entityID = gEcs.createEntity();
@@ -605,7 +605,7 @@ public:
 					--gBulletsLeft;
 				}
 			}
-#define MOVE_SPEED 0.3
+#define MOVE_SPEED 0.3f
 			Scalar moveDelta = MOVE_SPEED * dt;
 			Vector& position = tf.position;
 			if (m_k[SDL_SCANCODE_UP]) {
