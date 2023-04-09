@@ -2,10 +2,10 @@
 
 ## IDE  
 To use these files you must have Visual Studio installed on your local machine.  
-This project is checked to compile fine with Visual Studio version 2022.
+This project is checked to compile fine with Visual Studio 2022.
 
 ## Setup third-party libraries  
-To set up SDL2 and its plugin, you first have to install [vcpkg](https://vcpkg.io/en/getting-started.html).  
+To set up SDL2 and its plugins, you first have to install [vcpkg](https://vcpkg.io/en/getting-started.html).  
 Then, open the terminal and type:
 > vcpkg install sdl2:x64-windows  
 > vcpkg install sdl2-image:x64-windows  
