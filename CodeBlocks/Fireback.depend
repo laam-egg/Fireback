@@ -1,0 +1,83 @@
+# depslib dependency file v1.0
+1680915231 source:d:\fireback\code\core\ecs\signature.cpp
+	"Core/ECS/Signature.hpp"
+
+1681025683 d:\fireback\code\core\ecs\signature.hpp
+	<bitset>
+	"Core/Component/ComponentID.hpp"
+
+1680871096 d:\fireback\code\core\component\componentid.hpp
+	<cstdint>
+
+1681024971 source:d:\fireback\code\core\entity\entityidmanager.cpp
+	"Core/Entity/EntityIDManager.hpp"
+	"Core/Exception.hpp"
+
+1680851711 d:\fireback\code\core\entity\entityidmanager.hpp
+	<queue>
+	<array>
+	"Core/Entity/EntityID.hpp"
+	"Core/ECS/Signature.hpp"
+
+1680871233 d:\fireback\code\core\entity\entityid.hpp
+	<cstdint>
+
+1678891966 d:\fireback\code\core\exception.hpp
+	<exception>
+	<string>
+
+1680851801 source:d:\fireback\code\core\exception.cpp
+	"Core/Exception.hpp"
+
+1681024885 source:d:\fireback\code\core\vector.cpp
+	"Vector.hpp"
+	<cmath>
+
+1680962302 d:\fireback\code\core\vector.hpp
+
+1681026258 source:d:\fireback\code\main.cpp
+	<iostream>
+	<memory>
+	<chrono>
+	<sstream>
+	<iomanip>
+	<SDL2/SDL.h>
+	<SDL2/SDL_image.h>
+	<SDL2/SDL_ttf.h>
+	<SDL2/SDL_mixer.h>
+	"Core/Vector.hpp"
+	"Core/ECS/ECS.hpp"
+
+1681025737 d:\fireback\code\core\ecs\ecs.hpp
+	<memory>
+	"Core/Entity/EntityIDManager.hpp"
+	"Core/Component/ComponentManager.hpp"
+	"Core/System/SystemManager.hpp"
+
+1680920381 d:\fireback\code\core\component\componentmanager.hpp
+	<unordered_map>
+	<memory>
+	"Core/Component/ComponentDataArray.hpp"
+	"Core/Exception.hpp"
+
+1680941029 d:\fireback\code\core\component\componentdataarray.hpp
+	<array>
+	<unordered_map>
+	<functional>
+	"Core/Entity/EntityID.hpp"
+	"Core/Component/ComponentID.hpp"
+	"Core/Exception.hpp"
+
+1680915701 d:\fireback\code\core\system\systemmanager.hpp
+	<unordered_map>
+	<memory>
+	"Core/Exception.hpp"
+	"Core/ECS/Signature.hpp"
+	"Core/Entity/EntityID.hpp"
+	"Core/System/BaseSystem.hpp"
+	"Core/System/SystemManager.hpp"
+
+1680915704 d:\fireback\code\core\system\basesystem.hpp
+	<set>
+	"Core/Entity/EntityID.hpp"
+
