@@ -96,7 +96,7 @@ template<typename T>
 void ECS::removeComponentFromEntity(EntityID entityID) {
 	Signature entitySig = m_entityIDManagerPtr->getEntitySignature(entityID);
 	entitySig.disableComponent(m_componentManagerPtr->getComponentID<T>());
-	m_entityIDManagerPtr->setEntitySignature(entitySig);
+	m_entityIDManagerPtr->setEntitySignature(entityID, entitySig);
 
 	m_componentManagerPtr->removeComponentFromEntity<T>(entityID);
 
