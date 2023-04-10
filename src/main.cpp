@@ -17,6 +17,8 @@
 // GLOBAL VARIABLES //
 //////////////////////
 
+std::string gBasePath{};
+
 ECS gEcs;
 int const gWindowWidth = 640;
 int const gWindowHeight = 480;
@@ -203,6 +205,10 @@ struct Bullet {
 //////////////////////
 // GLOBAL FUNCTIONS //
 //////////////////////
+
+std::string getFullResourcePath(std::string const& path) {
+	return gBasePath + "/res/" + path;
+}
 
 void createBullet(Vector const& position, Scalar gunAngle, BulletEmitter bulletEmitter) {
 	Vector velocity(0.2f, 0);
@@ -678,7 +684,7 @@ public:
 
 	void init(SDL_Renderer* renderer) {
 		m_renderer = renderer;
-		m_digiFont = TTF_OpenFont("res/fonts/DS-DIGI.ttf", gStatusAreaRect.h - 1);
+		m_digiFont = TTF_OpenFont(getFullResourcePath("fonts/DS-DIGI.ttf").c_str(), gStatusAreaRect.h - 1);
 		if (m_digiFont == NULL) {
 			throw Exception("Could not load font.");
 		}
@@ -823,6 +829,9 @@ extern "C" int main(int argc, char* argv[]) {
 			return -1;
 		}
 	}
+
+	gBasePath = SDL_GetBasePath();
+
 	SDL_Window* window = SDL_CreateWindow("Fireback", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, gWindowWidth, gWindowHeight, SDL_WINDOW_SHOWN);
 	if (window == NULL) {
 		return -1;
@@ -861,10 +870,10 @@ extern "C" int main(int argc, char* argv[]) {
 	auto bos = gEcs.registerSystem<BotSystem>(BotSystem::getSignature());
 	bos->init();
 
-	SDL_Texture* playerTexture = loadImageAsTexture(renderer, "res/images/player.png");
-	SDL_Texture* botTexture = loadImageAsTexture(renderer, "res/images/bot.png");
-	gBlueBulletTexture = loadImageAsTexture(renderer, "res/images/blue-bullet.png");
-	gRedBulletTexture = loadImageAsTexture(renderer, "res/images/red-bullet.png");
+	SDL_Texture* playerTexture = loadImageAsTexture(renderer, getFullResourcePath("images/player.png"));
+	SDL_Texture* botTexture = loadImageAsTexture(renderer, getFullResourcePath("images/bot.png"));
+	gBlueBulletTexture = loadImageAsTexture(renderer, getFullResourcePath("images/blue-bullet.png"));
+	gRedBulletTexture = loadImageAsTexture(renderer, getFullResourcePath("images/red-bullet.png"));
 
 	EntityID playerID = gEcs.createEntity();
 	{
