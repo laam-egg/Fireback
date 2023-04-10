@@ -62,6 +62,8 @@
 		<Unit filename="../src/Core/Exception.hpp" />
 		<Unit filename="../src/Core/System/BaseSystem.hpp" />
 		<Unit filename="../src/Core/System/SystemManager.hpp" />
+		<Unit filename="../src/Core/Timer.cpp" />
+		<Unit filename="../src/Core/Timer.hpp" />
 		<Unit filename="../src/Core/Vector.cpp" />
 		<Unit filename="../src/Core/Vector.hpp" />
 		<Unit filename="../src/main.cpp" />
