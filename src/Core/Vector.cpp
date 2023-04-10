@@ -71,8 +71,17 @@ void Vector::rotate(Scalar a) {
 }
 
 Scalar Vector::getAngleOfSlope() const {
-	if (x == 0) return 0; // not really, but suit our purpose.
     return atan2(y, x);
+}
+
+#include <limits>
+Scalar Vector::getSlope() const {
+	if (x == 0) return std::numeric_limits<Scalar>::max();
+	return y / x;
+}
+
+bool Vector::isZeroVector() const {
+	return (x == 0 && y == 0);
 }
 
 Vector getRotatedVector(Vector v, Scalar const& angle) {

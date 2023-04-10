@@ -22,6 +22,7 @@
     <ClCompile Include="..\src\Core\ECS\Signature.cpp" />
     <ClCompile Include="..\src\Core\Entity\EntityIDManager.cpp" />
     <ClCompile Include="..\src\Core\Exception.cpp" />
+    <ClCompile Include="..\src\Core\Timer.cpp" />
     <ClCompile Include="..\src\Core\Vector.cpp" />
     <ClCompile Include="..\src\main.cpp" />
   </ItemGroup>
@@ -36,6 +37,7 @@
     <ClInclude Include="..\src\Core\Exception.hpp" />
     <ClInclude Include="..\src\Core\System\BaseSystem.hpp" />
     <ClInclude Include="..\src\Core\System\SystemManager.hpp" />
+    <ClInclude Include="..\src\Core\Timer.hpp" />
     <ClInclude Include="..\src\Core\Vector.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -91,10 +93,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)..\bin</OutDir>
+    <OutDir>$(SolutionDir)..\bin\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)..\bin</OutDir>
+    <OutDir>$(SolutionDir)..\bin\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

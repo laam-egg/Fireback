@@ -31,6 +31,15 @@ public:
 	void rotate(Scalar angle);
 
 	Scalar getAngleOfSlope() const;
+
+	/**
+ 	 * ATTENTION: In case vector.x = 0, the current implementation of this function
+	 * would return the maximum possible value of Scalar type, in an attempt to
+	 * denote INFINITY.
+	 */
+	Scalar getSlope() const;
+
+	bool isZeroVector() const;
 };
 
 inline Scalar abs(Vector const& v) {
