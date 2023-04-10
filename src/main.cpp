@@ -22,8 +22,8 @@ std::string gBasePath{};
 ECS gEcs;
 int const gWindowWidth = 640;
 int const gWindowHeight = 480;
-SDL_Rect gPlaygroundRect = { 0, 40, 640, 440 };
-SDL_Rect gStatusAreaRect = { 0, 0, 640, 40 };
+SDL_Rect const gPlaygroundRect = { 0, 40, 640, 440 };
+SDL_Rect const gStatusAreaRect = { 0, 0, 640, 40 };
 bool gGameRunning = false;
 Scalar gAge = 0;
 Scalar gLastAgeMerit = 0;
@@ -577,6 +577,18 @@ public:
 			if (m_k[SDL_SCANCODE_RIGHT]) {
 				position.x += moveDelta;
 			}
+
+			Scalar const maxPosition_x = gPlaygroundRect.w - tf.radius; // + gPlaygroundRect.x; // RenderSystem already takes care of the viewport, so the .x advance is not needed.
+			Scalar const maxPosition_y = gPlaygroundRect.h - tf.radius;
+			Scalar const minPosition_x = 0 + tf.radius;
+			Scalar const minPosition_y = 0 + tf.radius;
+#define LIMIT(coord) \
+if (position.coord <= minPosition_##coord) position.coord = minPosition_##coord; \
+else if (position.coord >= maxPosition_##coord) position.coord = maxPosition_##coord
+
+			LIMIT(x);
+			LIMIT(y);
+#undef LIMIT
 
 			Vector nearestBotPosition = findPositionOfNearestBot(position, botArrayPtr);
 			tf.rotation = (nearestBotPosition - position).getAngleOfSlope();
