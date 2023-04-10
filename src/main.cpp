@@ -1,3 +1,5 @@
+// VELOCITY UNIT: pixel per millisecond.
+
 #include <iostream>
 #include <memory>
 #include <chrono>
@@ -11,108 +13,9 @@
 #include "Core/Vector.hpp"
 #include "Core/ECS/ECS.hpp"
 
-
-// BEGIN COPIED CODE from https://gist.github.com/Gumichan01/332c26f6197a432db91cc4327fcabb1c
-// THIS COPIED CODE WILL BE REMOVED IN THE FUTURE
-// WHEN ENTITIES ARE RENDERED AS IMAGES.
-////////////////////////////////////////////////////////////////////
-
-
-int
-SDL_RenderDrawCircle(SDL_Renderer* renderer, int x, int y, int radius)
-{
-	int offsetx, offsety, d;
-	int status;
-
-	offsetx = 0;
-	offsety = radius;
-	d = radius - 1;
-	status = 0;
-
-	while (offsety >= offsetx) {
-		status += SDL_RenderDrawPoint(renderer, x + offsetx, y + offsety);
-		status += SDL_RenderDrawPoint(renderer, x + offsety, y + offsetx);
-		status += SDL_RenderDrawPoint(renderer, x - offsetx, y + offsety);
-		status += SDL_RenderDrawPoint(renderer, x - offsety, y + offsetx);
-		status += SDL_RenderDrawPoint(renderer, x + offsetx, y - offsety);
-		status += SDL_RenderDrawPoint(renderer, x + offsety, y - offsetx);
-		status += SDL_RenderDrawPoint(renderer, x - offsetx, y - offsety);
-		status += SDL_RenderDrawPoint(renderer, x - offsety, y - offsetx);
-
-		if (status < 0) {
-			status = -1;
-			break;
-		}
-
-		if (d >= 2 * offsetx) {
-			d -= 2 * offsetx + 1;
-			offsetx += 1;
-		}
-		else if (d < 2 * (radius - offsety)) {
-			d += 2 * offsety - 1;
-			offsety -= 1;
-		}
-		else {
-			d += 2 * (offsety - offsetx - 1);
-			offsety -= 1;
-			offsetx += 1;
-		}
-	}
-
-	return status;
-}
-
-
-int
-SDL_RenderFillCircle(SDL_Renderer* renderer, int x, int y, int radius)
-{
-	int offsetx, offsety, d;
-	int status;
-
-	offsetx = 0;
-	offsety = radius;
-	d = radius - 1;
-	status = 0;
-
-	while (offsety >= offsetx) {
-
-		status += SDL_RenderDrawLine(renderer, x - offsety, y + offsetx,
-			x + offsety, y + offsetx);
-		status += SDL_RenderDrawLine(renderer, x - offsetx, y + offsety,
-			x + offsetx, y + offsety);
-		status += SDL_RenderDrawLine(renderer, x - offsetx, y - offsety,
-			x + offsetx, y - offsety);
-		status += SDL_RenderDrawLine(renderer, x - offsety, y - offsetx,
-			x + offsety, y - offsetx);
-
-		if (status < 0) {
-			status = -1;
-			break;
-		}
-
-		if (d >= 2 * offsetx) {
-			d -= 2 * offsetx + 1;
-			offsetx += 1;
-		}
-		else if (d < 2 * (radius - offsety)) {
-			d += 2 * offsety - 1;
-			offsety -= 1;
-		}
-		else {
-			d += 2 * (offsety - offsetx - 1);
-			offsety -= 1;
-			offsetx += 1;
-		}
-	}
-
-	return status;
-}
-////////////////////////////////////////////////////////////////////
-// END OF COPIED CODE.
-
-
-// VELOCITY UNIT: pixel per millisecond.
-
+//////////////////////
+// GLOBAL VARIABLES //
+//////////////////////
 
 ECS gEcs;
 int const gWindowWidth = 640;
@@ -125,11 +28,22 @@ Scalar gLastAgeMerit = 0;
 int gBulletsLeft = 500;
 int gLevel = 0;
 
+SDL_Texture* gBlueBulletTexture = NULL;
+SDL_Texture* gRedBulletTexture = NULL;
+
 ////////////////////////
 ////// COMPONENTS //////
 ////////////////////////
 
 struct Renderable {
+	SDL_Texture* texture{ NULL };
+
+	Renderable() = default;
+
+	Renderable(SDL_Texture* tex)
+		: texture(tex) {
+		
+	}
 };
 
 struct Transform {
@@ -285,6 +199,55 @@ struct Bullet {
 		: emitter(_emitter) {
 	}
 };
+
+//////////////////////
+// GLOBAL FUNCTIONS //
+//////////////////////
+
+void createBullet(Vector const& position, Scalar gunAngle, BulletEmitter bulletEmitter) {
+	Vector velocity(0.2f, 0);
+	velocity.rotate(gunAngle);
+
+	EntityID entityID = gEcs.createEntity();
+	gEcs.addComponentToEntity(entityID, Transform(position, Scalar(0), Scalar(3)));
+	gEcs.addComponentToEntity(entityID, RigidBody(Scalar(20), velocity, Vector(0, 0)));
+	gEcs.addComponentToEntity(entityID, Collider());
+	gEcs.addComponentToEntity(entityID, Renderable(bulletEmitter == EMITTER_PLAYER ? gBlueBulletTexture : gRedBulletTexture));
+	gEcs.addComponentToEntity(entityID, Bullet(bulletEmitter));
+};
+
+/**
+ * ATTENTION: Destroy the returned texture using SDL_DestroyTexture() at exit.
+ */
+SDL_Texture* loadImageAsTexture(SDL_Renderer* renderer, std::string const& path) {
+	SDL_Surface* surface = IMG_Load(path.c_str());
+	if (surface == NULL) {
+		throw Exception(std::string("Could not load image. IMG_GetError(): ") + IMG_GetError());
+	}
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+	if (texture == NULL) {
+		throw Exception(std::string("Could not create texture. SDL_GetError(): ") + SDL_GetError());
+	}
+	SDL_FreeSurface(surface);
+	return texture;
+}
+
+std::string formatAge(Scalar age) {
+	std::chrono::milliseconds ms(static_cast<std::uint64_t>(age));
+	auto secs = std::chrono::duration_cast<std::chrono::seconds>(ms);
+	ms -= std::chrono::duration_cast<std::chrono::milliseconds>(secs);
+	auto mins = std::chrono::duration_cast<std::chrono::minutes>(secs);
+	secs -= std::chrono::duration_cast<std::chrono::seconds>(mins);
+	auto hours = std::chrono::duration_cast<std::chrono::hours>(mins);
+	mins -= std::chrono::duration_cast<std::chrono::minutes>(hours);
+
+	std::stringstream ss;
+	ss << std::setw(2) << std::setfill('0') << hours.count() << ":";
+	ss << std::setw(2) << std::setfill('0') << mins.count() << ":";
+	ss << std::setw(2) << std::setfill('0') << secs.count() << ".";
+	ss << std::setw(3) << std::setfill('0') << ms.count();
+	return ss.str();
+}
 
 /////////////////////
 ////// SYSTEMS //////
@@ -533,18 +496,6 @@ public:
 	}
 };
 
-void createBullet(Vector const& position, Scalar gunAngle, BulletEmitter bulletEmitter) {
-	Vector velocity(0.2f, 0);
-	velocity.rotate(gunAngle);
-
-	EntityID entityID = gEcs.createEntity();
-	gEcs.addComponentToEntity(entityID, Transform(position, Scalar(0), Scalar(5)));
-	gEcs.addComponentToEntity(entityID, RigidBody(Scalar(20), velocity, Vector(0, 0)));
-	gEcs.addComponentToEntity(entityID, Collider());
-	gEcs.addComponentToEntity(entityID, Renderable());
-	gEcs.addComponentToEntity(entityID, Bullet(bulletEmitter));
-};
-
 class PlayerSystem
 	: public BaseSystem {
 public:
@@ -710,23 +661,6 @@ for (EntityID botID : entityIDs) {
 	}
 };
 
-std::string formatAge(Scalar age) {
-	std::chrono::milliseconds ms(static_cast<std::uint64_t>(age));
-	auto secs = std::chrono::duration_cast<std::chrono::seconds>(ms);
-	ms -= std::chrono::duration_cast<std::chrono::milliseconds>(secs);
-	auto mins = std::chrono::duration_cast<std::chrono::minutes>(secs);
-	secs -= std::chrono::duration_cast<std::chrono::seconds>(mins);
-	auto hours = std::chrono::duration_cast<std::chrono::hours>(mins);
-	mins -= std::chrono::duration_cast<std::chrono::minutes>(hours);
-
-	std::stringstream ss;
-	ss << std::setw(2) << std::setfill('0') << hours.count() << ":";
-	ss << std::setw(2) << std::setfill('0') << mins.count() << ":";
-	ss << std::setw(2) << std::setfill('0') << secs.count() << ".";
-	ss << std::setw(3) << std::setfill('0') << ms.count();
-	return ss.str();
-}
-
 class RenderSystem
 	: public BaseSystem {
 public:
@@ -827,38 +761,17 @@ public:
 		SDL_RenderSetViewport(m_renderer, &gPlaygroundRect);
 		for (EntityID const& entityID : entityIDs) {
 			Transform& tf = gEcs.getComponentDataOfEntityAsRef<Transform>(entityID);
-			// ATTENTION: Will use this variable in the near future
-			// Renderable& rd = gEcs.getComponentDataOfEntityAsRef<Renderable>(entityID);
-			if (gEcs.entityHasComponent<Bullet>(entityID)) {
-				Bullet& bl = gEcs.getComponentDataOfEntityAsRef<Bullet>(entityID);
-				if (bl.emitter == EMITTER_PLAYER) {
-					SDL_SetRenderDrawColor(m_renderer, 46, 140, 255, 255);
-				}
-				else if (bl.emitter == EMITTER_BOT) {
-					SDL_SetRenderDrawColor(m_renderer, 127, 10, 10, 255);
-				}
+			Renderable& rd = gEcs.getComponentDataOfEntityAsRef<Renderable>(entityID);
+
+			if (rd.texture == NULL) {
+				throw Exception(std::string("Texture not yet set for this Renderable entity. Entity ID: ") + std::to_string(entityID));
 			}
-			if (gEcs.entityHasComponent<Player>(entityID)) {
-				//Player& pl = gEcs.getComponentDataOfEntityAsRef<Player>(entityID);
-				Vector direction(tf.radius, 0);
-				direction.rotate(tf.rotation);
-				Vector topLeft = tf.position - direction;
-				Vector bottomRight = tf.position + direction;
-				SDL_SetRenderDrawColor(m_renderer, 255, 255, 0, 255);
-				SDL_RenderDrawLine(m_renderer, topLeft.x, topLeft.y, bottomRight.x, bottomRight.y);
-				SDL_SetRenderDrawColor(m_renderer, 0, 0, 255, 255);
-			}
-			if (gEcs.entityHasComponent<Bot>(entityID)) {
-				//Bot& bo = gEcs.getComponentDataOfEntityAsRef<Bot>(entityID);
-				Vector direction(tf.radius, 0);
-				direction.rotate(tf.rotation);
-				Vector topLeft = tf.position - direction;
-				Vector bottomRight = tf.position + direction;
-				SDL_SetRenderDrawColor(m_renderer, 255, 255, 0, 255);
-				SDL_RenderDrawLine(m_renderer, topLeft.x, topLeft.y, bottomRight.x, bottomRight.y);
-				SDL_SetRenderDrawColor(m_renderer, 255, 0, 0, 255); // TODO: Clean this duplicating code
-			}
-			SDL_RenderFillCircle(m_renderer, tf.position.x, tf.position.y, tf.radius);
+
+			SDL_Rect dst{};
+			dst.x = static_cast<int>(tf.position.x - tf.radius);
+			dst.y = static_cast<int>(tf.position.y - tf.radius);
+			dst.w = dst.h = static_cast<int>(tf.radius * 2);
+			SDL_RenderCopyEx(m_renderer, rd.texture, NULL, &dst, tf.rotation * 180 / 3.14, NULL, SDL_FLIP_NONE);
 		}
 
 		SDL_RenderSetViewport(m_renderer, NULL);
@@ -948,19 +861,24 @@ extern "C" int main(int argc, char* argv[]) {
 	auto bos = gEcs.registerSystem<BotSystem>(BotSystem::getSignature());
 	bos->init();
 
+	SDL_Texture* playerTexture = loadImageAsTexture(renderer, "res/images/player.png");
+	SDL_Texture* botTexture = loadImageAsTexture(renderer, "res/images/bot.png");
+	gBlueBulletTexture = loadImageAsTexture(renderer, "res/images/blue-bullet.png");
+	gRedBulletTexture = loadImageAsTexture(renderer, "res/images/red-bullet.png");
+
 	EntityID playerID = gEcs.createEntity();
 	{
 		gEcs.addComponentToEntity(playerID, Player());
 		gEcs.addComponentToEntity(playerID, Transform(Vector(20, 20), 0, 10));
 		gEcs.addComponentToEntity(playerID, Collider());
-		gEcs.addComponentToEntity(playerID, Renderable());
+		gEcs.addComponentToEntity(playerID, Renderable(playerTexture));
 	}
 
 	EntityID botID = gEcs.createEntity();
 	{
 		gEcs.addComponentToEntity(botID, Bot());
 		gEcs.addComponentToEntity(botID, Transform(Vector(gWindowWidth / 2, gWindowHeight / 2), 0, 15));
-		gEcs.addComponentToEntity(botID, Renderable());
+		gEcs.addComponentToEntity(botID, Renderable(botTexture));
 	}
 
 	// TTF_Font*
@@ -1028,6 +946,11 @@ extern "C" int main(int argc, char* argv[]) {
 	pls->quit();
 	bos->quit();
 	rend->quit();
+
+	SDL_DestroyTexture(gRedBulletTexture);
+	SDL_DestroyTexture(gBlueBulletTexture);
+	SDL_DestroyTexture(botTexture);
+	SDL_DestroyTexture(playerTexture);
 
 	SDL_DestroyRenderer(renderer);
 
