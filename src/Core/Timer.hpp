@@ -42,7 +42,7 @@ private:
 	// Adding :: here seems legit according to C++ standard,
 	// since it denotes the function should be found in global
 	// namespace.
-	// While CodeBlocks accept this syntax, Visual Studio
+	// While CodeBlocks accepts this syntax, Visual Studio
 	// throws out error E0276 that reads:
 	// > name followed by '::' must be a class or namespace name
 	// Therefore, I leave the operator commented here.
