@@ -25,9 +25,11 @@ public:
 
 	void onEntityDestroyed(EntityID entityID);
 
+	void restart();
+
 private:
-	std::unordered_map<SystemLookupKey, std::shared_ptr<BaseSystem>> m_systems;
-	std::unordered_map<SystemLookupKey, Signature> m_systemSignatures;
+	std::unordered_map<SystemLookupKey, std::shared_ptr<BaseSystem>> m_systems{};
+	std::unordered_map<SystemLookupKey, Signature> m_systemSignatures{};
 
 	template<typename T>
 	static SystemLookupKey getLookupKeyOfAnySystem();
@@ -40,9 +42,15 @@ private:
 
 #include "Core/System/SystemManager.hpp"
 
-SystemManager::SystemManager()
-	: m_systemSignatures{} {
+void SystemManager::restart() {
+	for (auto const& pair : m_systems) {
+		auto const& systemPtr = pair.second;
+		systemPtr->entityIDs.clear();
+	}
+}
 
+SystemManager::SystemManager() {
+	// restart();
 }
 
 template<typename T>

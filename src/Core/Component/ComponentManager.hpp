@@ -35,10 +35,12 @@ public:
 	template<typename T>
 	std::shared_ptr<ComponentDataArray<T>> getComponentDataArrayAsPtr() const;
 
+	void restart();
+
 private:
-	std::unordered_map<ComponentLookupKey, ComponentID> m_componentIDs;
-	std::unordered_map<ComponentLookupKey, std::shared_ptr<AbstractComponentDataArray>> m_componentDataArrays;
-	ComponentID m_nextComponentID;
+	std::unordered_map<ComponentLookupKey, ComponentID> m_componentIDs{};
+	std::unordered_map<ComponentLookupKey, std::shared_ptr<AbstractComponentDataArray>> m_componentDataArrays{};
+	ComponentID m_nextComponentID{};
 
 	template<typename T>
 	static inline ComponentLookupKey getLookupKeyOfAnyComponentType() {
@@ -57,11 +59,15 @@ private:
 
 #include "Core/Exception.hpp"
 
-ComponentManager::ComponentManager()
-	: m_componentIDs{},
-	m_componentDataArrays{},
-	m_nextComponentID(0) {
+void ComponentManager::restart() {
+	for (auto const& pair : m_componentDataArrays) {
+		auto const& dataArrayPtr = pair.second;
+		dataArrayPtr->restart();
+	}
+}
 
+ComponentManager::ComponentManager() {
+	// restart();
 }
 
 template<typename T>

@@ -1,13 +1,8 @@
 #include "Core/Entity/EntityIDManager.hpp"
 #include "Core/Exception.hpp"
 
-EntityIDManager::EntityIDManager()
-    : m_unusedEntityIDs{},
-    m_entitySignatures{},
-    m_livingEntityCount(0) {
-    for (EntityID id = 0; id <= MAX_ENTITY_ID; ++id) {
-        m_unusedEntityIDs.push(id);
-    }
+EntityIDManager::EntityIDManager() {
+	resetUnusedEntityIDs();
 }
 
 EntityID EntityIDManager::acquireEntityID() {
@@ -42,4 +37,20 @@ inline void EntityIDManager::checkEntityIDValidity(EntityID id) {
         throw Exception("Invalid entity ID.");
     }
     // TODO: Check if id is present in the queue ; but that may be unnecessary.
+}
+
+void EntityIDManager::restart() {
+	resetUnusedEntityIDs();
+}
+
+void EntityIDManager::resetUnusedEntityIDs() {
+	Signature zeroSig{};
+	m_entitySignatures.fill(zeroSig);
+
+	m_unusedEntityIDs = {};
+	for (EntityID id = 0; id <= MAX_ENTITY_ID; ++id) {
+		m_unusedEntityIDs.push(id);
+	}
+
+	m_livingEntityCount = 0;
 }

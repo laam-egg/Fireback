@@ -12,6 +12,8 @@ public:
     virtual ~AbstractComponentDataArray() = default;
 
     virtual void onEntityDestroyed(EntityID id) = 0;
+
+	virtual void restart() = 0;
 };
 
 /**
@@ -52,13 +54,17 @@ public:
 
 	size_t getSize() const;
 
+	virtual void restart() override;
+
 private:
 	bool isComponentAddedToEntity(EntityID id);
+
 	void ensureComponentAddedToEntity(EntityID id);
-    std::array<T, MAX_ENTITIES> m_componentDataArray;
-    std::unordered_map<EntityID, size_t> m_entityID2ComponentArrayIndex;
-    std::unordered_map<size_t, EntityID> m_componentArrayIndex2EntityID;
-	size_t m_size;
+
+	std::array<T, MAX_ENTITIES> m_componentDataArray{};
+	std::unordered_map<EntityID, size_t> m_entityID2ComponentArrayIndex{};
+	std::unordered_map<size_t, EntityID> m_componentArrayIndex2EntityID{};
+	size_t m_size{};
 };
 
 
@@ -69,17 +75,22 @@ private:
 #include "Core/Exception.hpp"
 
 template<typename T>
-ComponentDataArray<T>::ComponentDataArray()
-	: m_componentDataArray{},
-	m_entityID2ComponentArrayIndex{},
-	m_componentArrayIndex2EntityID{},
-	m_size(0) {
+void ComponentDataArray<T>::restart() {
+	T zeroComponentData{};
+	m_componentDataArray.fill(zeroComponentData);
+	m_entityID2ComponentArrayIndex.clear();
+	m_componentArrayIndex2EntityID.clear();
+	m_size = 0;
+}
 
+template<typename T>
+ComponentDataArray<T>::ComponentDataArray() {
+	// restart();
 }
 
 template<typename T>
 ComponentDataArray<T>::~ComponentDataArray() {
-	// TODO
+	// Nothing
 }
 
 template<typename T>
@@ -87,7 +98,7 @@ void ComponentDataArray<T>::addComponentToEntity(EntityID entityID, T componentD
 	if (isComponentAddedToEntity(entityID)) {
 		throw Exception("Component already added to entity.");
 	}
-	auto const /*&*/ newIndex = m_size;
+	auto const newIndex = m_size;
 	m_componentDataArray[newIndex] = componentData;
 	m_entityID2ComponentArrayIndex[entityID] = newIndex;
 	m_componentArrayIndex2EntityID[newIndex] = entityID;

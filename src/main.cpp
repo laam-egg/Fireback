@@ -5,6 +5,7 @@
 #include <chrono>
 #include <sstream>
 #include <iomanip>
+#include <stack>
 #define SDL_MAIN_HANDLED
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -235,13 +236,13 @@ void createFire(Vector const& position) {
 	gEcs.addComponentToEntity(entityID, Renderable(gFireTexture));
 	gEcs.addComponentToEntity(entityID, Transform(position, 0, 28));
 	// BE CAREFUL !!!!!!
-	static Timer t(10, [entityID](Uint32 interval, TimerCallbackData*) -> Uint32 {
+	auto* t = new Timer(10, [entityID](Uint32 interval, TimerCallbackData*) -> Uint32 {
 		Transform& tf = gEcs.getComponentDataOfEntityAsRef<Transform>(entityID);
 		tf.radius += 1;
-		if (tf.radius >= 50) return 0;
+		if (tf.radius >= 50) return 0; // TODO: add to cleanup stack. Currently accepting memory leak.
 		else return interval;
 	}, NULL, false);
-	t.run();
+	t->run();
 }
 
 /**
@@ -997,79 +998,106 @@ extern "C" int main(int argc, char* argv[]) {
 	gRedBulletTexture = loadImageAsTexture(renderer, getFullResourcePath("images/red-bullet.png"));
 	gFireTexture = loadImageAsTexture(renderer, getFullResourcePath("images/fire.png"));
 
-	EntityID playerID = gEcs.createEntity();
-	{
-		gEcs.addComponentToEntity(playerID, Player());
-		gEcs.addComponentToEntity(playerID, Transform(Vector(20, 20), 0, 10));
-		gEcs.addComponentToEntity(playerID, Collider());
-		gEcs.addComponentToEntity(playerID, Renderable(playerTexture));
-	}
+	EntityID playerID{};
 
-	EntityID botID = gEcs.createEntity();
-	{
-		gEcs.addComponentToEntity(botID, Bot());
-		gEcs.addComponentToEntity(botID, Transform(Vector(gWindowWidth / 2, gWindowHeight / 2), 0, 15));
-		gEcs.addComponentToEntity(botID, Renderable(botTexture));
-	}
+	EntityID botID{};
 
-	// TTF_Font*
-
-	SDL_Event event;
 	Scalar dt = 0;
 
 	bool running = true;
 	gGameRunning = true;
 
-	while (running && gGameRunning) {
-		auto startTime = std::chrono::high_resolution_clock::now();
+	auto restart = [&dt, &playerID, &botID, &playerTexture, &botTexture]() {
+		gGameRunning = true;
+		gAge = 0;
+		gLastAgeMerit = 0;
+		gBulletsLeft = 500;
+		gLevel = 0;
 
-		while (SDL_PollEvent(&event)) {
-			switch (event.type) {
-			case SDL_QUIT:
-				running = false;
-				gGameRunning = false;
-				break;
-			}
+		dt = 0;
+
+		gEcs.restart();
+
+		playerID = gEcs.createEntity();
+		{
+			gEcs.addComponentToEntity(playerID, Player());
+			gEcs.addComponentToEntity(playerID, Transform(Vector(20, 20), 0, 10));
+			gEcs.addComponentToEntity(playerID, Collider());
+			gEcs.addComponentToEntity(playerID, Renderable(playerTexture));
 		}
 
-		rend->update();
-
-		kin->update(dt);
-		col->update(dt);
-		dyn->update(dt);
-
-		pls->update(dt);
-		bos->update(dt);
-
-		if (gAge - gLastAgeMerit >= 20000 * gLevel) {
-			gBulletsLeft += gLevel * 3000;
-			++gLevel;
-			gLastAgeMerit = gAge;
+		botID = gEcs.createEntity();
+		{
+			gEcs.addComponentToEntity(botID, Bot());
+			gEcs.addComponentToEntity(botID, Transform(Vector(gWindowWidth / 2, gWindowHeight / 2), 0, 15));
+			gEcs.addComponentToEntity(botID, Renderable(botTexture));
 		}
+	};
 
-		auto stopTime = std::chrono::high_resolution_clock::now();
-		auto duration = std::chrono::duration<Scalar, std::chrono::milliseconds::period>(stopTime - startTime);
-		dt = duration.count();
-		gAge += dt;
-	}
+	SDL_Event event;
 
 	while (running) {
-		rend->update();
-		while (SDL_PollEvent(&event)) {
-			switch (event.type) {
-			case SDL_QUIT:
-				running = false;
-				break;
+		restart();
 
-			case SDL_KEYDOWN:
-				switch (event.key.keysym.sym) {
-				case SDLK_RETURN:
+		while (gGameRunning) {
+			auto startTime = std::chrono::high_resolution_clock::now();
+
+			while (SDL_PollEvent(&event)) {
+				switch (event.type) {
+				case SDL_QUIT:
 					running = false;
+					gGameRunning = false;
 					break;
 				}
 			}
+
+			rend->update();
+
+			kin->update(dt);
+			col->update(dt);
+			dyn->update(dt);
+
+			pls->update(dt);
+			bos->update(dt);
+
+			if (gAge - gLastAgeMerit >= 20000 * gLevel) {
+				gBulletsLeft += gLevel * 3000;
+				++gLevel;
+				gLastAgeMerit = gAge;
+			}
+
+			auto stopTime = std::chrono::high_resolution_clock::now();
+			auto duration = std::chrono::duration<Scalar, std::chrono::milliseconds::period>(stopTime - startTime);
+			dt = duration.count();
+			gAge += dt;
 		}
-		SDL_Delay(10);
+
+		if (!running) break;
+		bool waitForUserResponse = true;
+
+		while (waitForUserResponse) {
+			rend->update();
+			while (SDL_PollEvent(&event)) {
+				switch (event.type) {
+				case SDL_QUIT:
+					running = false;
+					waitForUserResponse = false;
+					break;
+
+				case SDL_KEYDOWN:
+					switch (event.key.keysym.sym) {
+					case SDLK_RETURN:
+						running = true;
+						waitForUserResponse = false;
+						break;
+					}
+				}
+			}
+			SDL_Delay(10);
+		}
+
+		if (running) continue;
+		else break;
 	}
 
 	kin->quit();

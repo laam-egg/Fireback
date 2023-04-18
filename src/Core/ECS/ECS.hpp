@@ -41,6 +41,8 @@ public:
 
 	void destroyEntity(EntityID entityID);
 
+	void restart();
+
 	template<typename T>
 	std::shared_ptr<T> registerSystem(Signature sysSig);
 
@@ -53,6 +55,12 @@ private:
 //////////////////////////
 // BEGIN IMPLEMENTATION //
 //////////////////////////
+
+void ECS::restart() {
+	m_entityIDManagerPtr->restart();
+	m_componentManagerPtr->restart();
+	m_systemManagerPtr->restart();
+}
 
 ECS::ECS()
 	: m_entityIDManagerPtr{},
@@ -70,6 +78,7 @@ void ECS::init() {
 	m_entityIDManagerPtr = std::make_unique<EntityIDManager>();
 	m_componentManagerPtr = std::make_unique<ComponentManager>();
 	m_systemManagerPtr = std::make_unique<SystemManager>();
+	// restart();
 }
 
 template<typename T>
