@@ -235,14 +235,27 @@ void createFire(Vector const& position) {
 	EntityID entityID = gEcs.createEntity();
 	gEcs.addComponentToEntity(entityID, Renderable(gFireTexture));
 	gEcs.addComponentToEntity(entityID, Transform(position, 0, 28));
-	// BE CAREFUL !!!!!!
-	auto* t = new Timer(10, [entityID](Uint32 interval, TimerCallbackData*) -> Uint32 {
+
+	// BE CAREFUL !!! Placement-new below.
+	static unsigned char timerMemoryPlace[sizeof(Timer)];
+	static bool timerInitializedBefore = false;
+
+	if (timerInitializedBefore) {
+		reinterpret_cast<Timer*>(timerMemoryPlace)->~Timer();
+	}
+	else {
+		timerInitializedBefore = true;
+	}
+
+	auto* t = new(timerMemoryPlace) Timer(10, [entityID](Uint32 interval, TimerCallbackData*) -> Uint32 {
 		Transform& tf = gEcs.getComponentDataOfEntityAsRef<Transform>(entityID);
 		tf.radius += 1;
-		if (tf.radius >= 50) return 0; // TODO: add to cleanup stack. Currently accepting memory leak.
+		if (tf.radius >= 50) return 0;
 		else return interval;
 	}, NULL, false);
+
 	t->run();
+	// No memory leak here thanks to placement-new.
 }
 
 /**
