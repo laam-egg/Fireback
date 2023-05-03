@@ -54,7 +54,30 @@ SDL_Rect RenderSystem::drawText(Vector position, std::string const& s, TTF_Font*
 	SDL_Rect fontDstRect = { static_cast<int>(position.x), static_cast<int>(position.y), fontSf->w, fontSf->h };
 	SDL_RenderCopy(m_renderer, fontTex, NULL, &fontDstRect);
 	SDL_DestroyTexture(fontTex);
-	SDL_FreeSurface(fontSf);
+	//SDL_FreeSurface(fontSf);
+	// The above line causes heap corruption error (return code 0xC0000374) when the program is
+	// compiled with Code::Blocks 20.03 (MinGW 8.1.0). However, it is recommended that the surface
+	// returned by TTF_RenderText_Solid() be freed when no longer used (*). In fact, when this line
+	// is present, VS 2022 compiles and runs the program just fine.
+	// It should therefore be considered a compiler's fault (or SDL2's fault on that compiler).
+	// I don't know whether other versions of MinGW-GCC have the same issue, so just ignore that
+	// line in case the (known so far) problematic compiler version is detected.
+	// (*) See these tutorials:
+	// 1. https://lazyfoo.net/tutorials/SDL/16_true_type_fonts/index.php#:~:text=SDL_FreeSurface(%20textSurface%20)%3B
+	// 2. https://thenumb.at/cpp-course/sdl2/07/07.html#:~:text=SDL_FreeSurface(%20text%20)%3B
+	// Even though I tried swapping texture-destroying and surface-freeing code, the problem persists.
+
+#ifdef __GNUC__ // https://gcc.gnu.org/onlinedocs/cpp/Common-Predefined-Macros.html
+#define GCC_VERSION (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__)
+#else
+#define GCC_VERSION 0
+#endif // __GNUC__
+
+#if GCC_VERSION == 80100 // MinGW-GCC 8.1.0
+    // SDL_FreeSurface(fontSf); // accepting possible memory leak
+#else
+    SDL_FreeSurface(fontSf);
+#endif // GCC_VERSION
 	return fontDstRect;
 }
 
