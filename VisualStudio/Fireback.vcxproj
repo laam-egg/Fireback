@@ -24,21 +24,52 @@
     <ClCompile Include="..\src\Core\Exception.cpp" />
     <ClCompile Include="..\src\Core\Timer.cpp" />
     <ClCompile Include="..\src\Core\Vector.cpp" />
+    <ClCompile Include="..\src\Game\Game.cpp" />
+    <ClCompile Include="..\src\Game\Systems\BotSystem.cpp" />
+    <ClCompile Include="..\src\Game\Systems\CollisionSystem.cpp" />
+    <ClCompile Include="..\src\Game\Systems\DynamicsSystem.cpp" />
+    <ClCompile Include="..\src\Game\Systems\KinematicsSystem.cpp" />
+    <ClCompile Include="..\src\Game\Systems\PlayerSystem.cpp" />
+    <ClCompile Include="..\src\Game\Systems\RenderSystem.cpp" />
     <ClCompile Include="..\src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\Core\Component\ComponentDataArray.hpp" />
+    <ClInclude Include="..\src\Core\Component\ComponentDataArray_impl.hpp" />
     <ClInclude Include="..\src\Core\Component\ComponentID.hpp" />
     <ClInclude Include="..\src\Core\Component\ComponentManager.hpp" />
+    <ClInclude Include="..\src\Core\Component\ComponentManager_impl.hpp" />
     <ClInclude Include="..\src\Core\ECS\ECS.hpp" />
+    <ClInclude Include="..\src\Core\ECS\ECS_impl.hpp" />
+    <ClInclude Include="..\src\Core\ECS\ecs_registry.hpp" />
     <ClInclude Include="..\src\Core\ECS\Signature.hpp" />
     <ClInclude Include="..\src\Core\Entity\EntityID.hpp" />
     <ClInclude Include="..\src\Core\Entity\EntityIDManager.hpp" />
     <ClInclude Include="..\src\Core\Exception.hpp" />
     <ClInclude Include="..\src\Core\System\BaseSystem.hpp" />
     <ClInclude Include="..\src\Core\System\SystemManager.hpp" />
+    <ClInclude Include="..\src\Core\System\SystemManager_impl.hpp" />
     <ClInclude Include="..\src\Core\Timer.hpp" />
     <ClInclude Include="..\src\Core\Vector.hpp" />
+    <ClInclude Include="..\src\Game\BulletDistribution.hpp" />
+    <ClInclude Include="..\src\Game\BulletEmitter.hpp" />
+    <ClInclude Include="..\src\Game\Components\AllComponents.hpp" />
+    <ClInclude Include="..\src\Game\Components\Bot.hpp" />
+    <ClInclude Include="..\src\Game\Components\Bullet.hpp" />
+    <ClInclude Include="..\src\Game\Components\Collider.hpp" />
+    <ClInclude Include="..\src\Game\Components\Player.hpp" />
+    <ClInclude Include="..\src\Game\Components\Renderable.hpp" />
+    <ClInclude Include="..\src\Game\Components\RigidBody.hpp" />
+    <ClInclude Include="..\src\Game\Components\Transform.hpp" />
+    <ClInclude Include="..\src\Game\Game.hpp" />
+    <ClInclude Include="..\src\Game\Systems\AllSystems.hpp" />
+    <ClInclude Include="..\src\Game\Systems\BotSystem.hpp" />
+    <ClInclude Include="..\src\Game\Systems\CollisionSystem.hpp" />
+    <ClInclude Include="..\src\Game\Systems\DynamicsSystem.hpp" />
+    <ClInclude Include="..\src\Game\Systems\KinematicsSystem.hpp" />
+    <ClInclude Include="..\src\Game\Systems\PlayerSystem.hpp" />
+    <ClInclude Include="..\src\Game\Systems\RenderSystem.hpp" />
+    <ClInclude Include="..\src\Game\Systems\system_begin_code.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

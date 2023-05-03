@@ -37,6 +37,8 @@ For example, an entity has components Transform and RigidBody will be managed by
 
 I relied predominantly on [this guide to ECS](https://austinmorlan.com/posts/entity_component_system/), which provides excellent explanation and a concrete implementation approach. I have been improving the model so that it suits the needs of this project.
 
+For more details about the implementation of ECS used in this game, refer to [this file](docs/README-ECS.md).
+
 ## TODO
  - Render entities as images.
  - Play sound.

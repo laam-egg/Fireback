@@ -1,0 +1,6 @@
+#include "Game/Systems/RenderSystem.hpp"
+#include "Game/Systems/KinematicsSystem.hpp"
+#include "Game/Systems/DynamicsSystem.hpp"
+#include "Game/Systems/CollisionSystem.hpp"
+#include "Game/Systems/PlayerSystem.hpp"
+#include "Game/Systems/BotSystem.hpp"

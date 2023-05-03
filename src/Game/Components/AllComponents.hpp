@@ -1,0 +1,7 @@
+#include "Game/Components/Renderable.hpp"
+#include "Game/Components/Transform.hpp"
+#include "Game/Components/RigidBody.hpp"
+#include "Game/Components/Collider.hpp"
+#include "Game/Components/Bullet.hpp"
+#include "Game/Components/Player.hpp"
+#include "Game/Components/Bot.hpp"
