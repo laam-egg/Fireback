@@ -11,9 +11,7 @@ class RenderSystem
 public:
 	static Signature getSignature();
 
-	RenderSystem();
-
-	void init(SDL_Renderer* renderer);
+	void init();
 
 	void quit();
 
@@ -28,10 +26,6 @@ public:
 	SDL_Rect drawText(Vector position, std::string const& s, TTF_Font* const font, SDL_Color const& fontColor, Alignment horizontalAlign = ALIGN_LEFT, Alignment verticalAlign = ALIGN_TOP);
 
 	void update();
-
-private:
-	SDL_Renderer* m_renderer;
-	TTF_Font* m_digiFont;
 };
 
 #endif // RenderSystem_INCLUDED

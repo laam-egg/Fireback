@@ -40,10 +40,7 @@ I relied predominantly on [this guide to ECS](https://austinmorlan.com/posts/ent
 For more details about the implementation of ECS used in this game, refer to [this file](docs/README-ECS.md).
 
 ## TODO
- - Render entities as images.
- - Play sound.
  - Load background image (or not).
- - Arrange Components and Systems as separate files instead of placing all of them in main.cpp.
  - Add CMakeLists.txt.
  - Resolve TODO entries in all header and source files.
 

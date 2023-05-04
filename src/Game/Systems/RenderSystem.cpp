@@ -8,23 +8,17 @@ Signature RenderSystem::getSignature() {
 	return sig;
 }
 
-RenderSystem::RenderSystem()
-	: m_renderer(NULL), m_digiFont(NULL) {
+void RenderSystem::init() {
 
-}
-
-void RenderSystem::init(SDL_Renderer* renderer) {
-	m_renderer = renderer;
-	m_digiFont = G.openFont("fonts/DS-DIGI.ttf", G.statusAreaRect.h - 1);
 }
 
 void RenderSystem::quit() {
-	TTF_CloseFont(m_digiFont);
+
 }
 
 SDL_Rect RenderSystem::drawText(Vector position, std::string const& s, TTF_Font* const font, SDL_Color const& fontColor, Alignment horizontalAlign, Alignment verticalAlign) {
 	SDL_Surface* fontSf = TTF_RenderText_Solid(font, s.c_str(), fontColor);
-	SDL_Texture* fontTex = SDL_CreateTextureFromSurface(m_renderer, fontSf);
+	SDL_Texture* fontTex = SDL_CreateTextureFromSurface(G.renderer, fontSf);
 	Vector size(fontSf->w, fontSf->h);
 	switch (horizontalAlign) {
 	case ALIGN_RIGHT:
@@ -52,7 +46,7 @@ SDL_Rect RenderSystem::drawText(Vector position, std::string const& s, TTF_Font*
 		break;
 	}
 	SDL_Rect fontDstRect = { static_cast<int>(position.x), static_cast<int>(position.y), fontSf->w, fontSf->h };
-	SDL_RenderCopy(m_renderer, fontTex, NULL, &fontDstRect);
+	SDL_RenderCopy(G.renderer, fontTex, NULL, &fontDstRect);
 	SDL_DestroyTexture(fontTex);
 	//SDL_FreeSurface(fontSf);
 	// The above line causes heap corruption error (return code 0xC0000374) when the program is
@@ -74,18 +68,18 @@ SDL_Rect RenderSystem::drawText(Vector position, std::string const& s, TTF_Font*
 #endif // __GNUC__
 
 #if GCC_VERSION == 80100 // MinGW-GCC 8.1.0
-    // SDL_FreeSurface(fontSf); // accepting possible memory leak
+	// SDL_FreeSurface(fontSf); // accepting possible memory leak
 #else
-    SDL_FreeSurface(fontSf);
+	SDL_FreeSurface(fontSf);
 #endif // GCC_VERSION
 	return fontDstRect;
 }
 
 void RenderSystem::update() {
-	SDL_SetRenderDrawColor(m_renderer, 255, 255, 255, 255);
-	SDL_RenderClear(m_renderer);
+	SDL_SetRenderDrawColor(G.renderer, 255, 255, 255, 255);
+	SDL_RenderClear(G.renderer);
 
-	SDL_RenderSetViewport(m_renderer, &G.statusAreaRect);
+	SDL_RenderSetViewport(G.renderer, &G.statusAreaRect);
 	std::string sTime = G.formatAge(G.age);
 	SDL_Color fontColor = { 0, 255, 0, 255 };
 	if (!G.gamePlaying) {
@@ -95,7 +89,7 @@ void RenderSystem::update() {
 		fontColor.a = 255;
 	}
 	{
-		drawText(Vector(1, 1), sTime, m_digiFont, fontColor);
+		drawText(Vector(1, 1), sTime, G.digiFont, fontColor);
 
 		if (G.gamePlaying) {
 			fontColor.r = 0;
@@ -105,10 +99,10 @@ void RenderSystem::update() {
 			if (a >= 256) a = 255;
 			fontColor.a = static_cast<Uint8>(a);
 		}
-		drawText(Vector(G.statusAreaRect.w - 3, 1), std::to_string(G.bulletsLeft), m_digiFont, fontColor, ALIGN_RIGHT);
+		drawText(Vector(G.statusAreaRect.w - 3, 1), std::to_string(G.bulletsLeft), G.digiFont, fontColor, ALIGN_RIGHT);
 	}
 
-	SDL_RenderSetViewport(m_renderer, &G.playgroundRect);
+	SDL_RenderSetViewport(G.renderer, &G.playgroundRect);
 	for (EntityID const& entityID : entityIDs) {
 		Transform& tf = G.ecs.getComponentDataOfEntityAsRef<Transform>(entityID);
 		Renderable& rd = G.ecs.getComponentDataOfEntityAsRef<Renderable>(entityID);
@@ -121,26 +115,26 @@ void RenderSystem::update() {
 		dst.x = static_cast<int>(tf.position.x - tf.radius);
 		dst.y = static_cast<int>(tf.position.y - tf.radius);
 		dst.w = dst.h = static_cast<int>(tf.radius * 2);
-		SDL_RenderCopyEx(m_renderer, rd.texture, NULL, &dst, tf.rotation * 180 / 3.14, NULL, SDL_FLIP_NONE);
+		SDL_RenderCopyEx(G.renderer, rd.texture, NULL, &dst, tf.rotation * 180 / 3.14, NULL, SDL_FLIP_NONE);
 	}
 
-	SDL_RenderSetViewport(m_renderer, NULL);
+	SDL_RenderSetViewport(G.renderer, NULL);
 
 	if (!G.gamePlaying) {
-		SDL_SetRenderDrawBlendMode(m_renderer, SDL_BLENDMODE_BLEND);
-		SDL_SetRenderDrawColor(m_renderer, 255, 255, 255, 127);
-		SDL_RenderFillRect(m_renderer, NULL);
+		SDL_SetRenderDrawBlendMode(G.renderer, SDL_BLENDMODE_BLEND);
+		SDL_SetRenderDrawColor(G.renderer, 255, 255, 255, 127);
+		SDL_RenderFillRect(G.renderer, NULL);
 
 		fontColor.r = 255;
 		fontColor.g = 255;
 		fontColor.b = 255;
 		fontColor.a = 255;
-#define drawTextGameOver() drawText(Vector(G.windowWidth, G.windowHeight) / 2, "GAME OVER", m_digiFont, fontColor, ALIGN_CENTER, ALIGN_CENTER)
+#define drawTextGameOver() drawText(Vector(G.windowWidth, G.windowHeight) / 2, "GAME OVER", G.digiFont, fontColor, ALIGN_CENTER, ALIGN_CENTER)
 		SDL_Rect r = drawTextGameOver();
-		SDL_SetRenderDrawColor(m_renderer, 255, 0, 0, 255);
-		SDL_RenderFillRect(m_renderer, &r);
+		SDL_SetRenderDrawColor(G.renderer, 255, 0, 0, 255);
+		SDL_RenderFillRect(G.renderer, &r);
 		drawTextGameOver();
 	}
 
-	SDL_RenderPresent(m_renderer);
+	SDL_RenderPresent(G.renderer);
 }
