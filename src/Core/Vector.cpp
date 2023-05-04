@@ -6,11 +6,6 @@ Vector::Vector()
     : Vector(0, 0) {
 }
 
-Vector::Vector(Scalar x, Scalar y) {
-    this->x = x;
-    this->y = y;
-}
-
 Vector::Vector(Vector const& other) {
     x = other.x;
     y = other.y;

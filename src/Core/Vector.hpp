@@ -1,6 +1,7 @@
 #ifndef Vector_INCLUDED
 #define Vector_INCLUDED
 
+#include <type_traits>
 
 struct Vector; // forward declaration
 
@@ -11,7 +12,18 @@ struct Vector {
 public:
     Scalar x, y;
     Vector();
-    Vector(Scalar x, Scalar y);
+
+	// Instead of
+	// Vector(Scalar x, Scalar y)
+	// I wrote this silly code so that VS2022 would not produce the warning "possible loss of data"
+	// when parameters passed in are not Scalar but, say, int.
+	template<typename T, typename U,
+		typename std::enable_if_t<std::is_arithmetic_v<T> && std::is_arithmetic_v<U>, bool> = true>
+	Vector(T x, U y) {
+		this->x = static_cast<Scalar>(x);
+		this->y = static_cast<Scalar>(y);
+	}
+
     Vector(Vector const& other);
     Vector operator+(Vector const& other) const;
     Vector operator-(Vector const& other) const;
