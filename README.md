@@ -26,6 +26,12 @@ At first, you are given a number of bullets. The longer you endure, the more bul
 
 The game will finish when one RED bullet collides the player ; type **ENTER** for new game. (The BLUE bullets are friendly and have no effects on you).
 
+## How to compile
+Project files that are specific to an IDE are placed in a separate folder named after the IDE's name, and located right in the root directory (let's call it an *IDE project folder*).  
+Refer to the ``README.md`` file under each *IDE project folder* to be guided through the steps for getting the program compiled on your own machine.  
+ - [For Code::Blocks](/CodeBlocks/README.md)  
+ - [For Visual Studio](/VisualStudio/README.md)
+
 ## Implementation details
 Though the project makes heavy use of modern C++ features including OOP, the dominant model of the game is ECS (Entity-Component-System) where:
  - each entity is referred to with a unique ID ;
