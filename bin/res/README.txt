@@ -1,0 +1,1 @@
+For information about the authors/sources and legal notices of these resources, read the file LEGAL.txt in each subdirectory.

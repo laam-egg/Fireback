@@ -1,0 +1,7 @@
+(Get this text displayed by a monospace font so that you could read the table. On Windows, open this file with Notepad is the simplest way.)  
+
+| File               | Source                                      |
+| ------------------ | ------------------------------------------- |
+| fire.wav           | https://www.youtube.com/watch?v=lGNwnstqAO4 |
+| bot-gunshot.wav    | https://www.youtube.com/watch?v=TOzxBXoRIlU |
+| player-gunshot.wav | https://www.youtube.com/watch?v=SnsgmrwOrFE |
