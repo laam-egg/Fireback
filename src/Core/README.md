@@ -1,7 +1,7 @@
 # Notes on using ECS
 
 ## Prerequisites  
-You should be familiar with ECS model, specifically the ECS implementation design used by this game. See README.md (in the project's root) for the link to the guide.
+You should be familiar with ECS model, specifically the ECS implementation design used by this game. See [README.md (in the project's root)](/README.md) for the link to the guide.
 
 Also note that ECS can be implemented in conjunction with any GUI or multimedia library, not just SDL2.
 
@@ -51,7 +51,7 @@ Note that registering (1) must be done with all classes used throughout the prog
 		ecs.addComponentToEntity(playerID, RigidBody(Mass(15), Velocity(0, 0));
 	}
 	```
-5. Write game loop. Every system should have an ``update()`` method to response to user events as well as update the entities' states after a specific amount of time.  
+5. Write game loop. Every system should have an ``update()`` method to respond to user events as well as update the entities' states after a certain amount of time.  
 	```cpp
 	// Game.cpp
 	void Game::run() {
