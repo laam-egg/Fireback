@@ -43,7 +43,7 @@ For example, an entity has components Transform and RigidBody will be managed by
 
 I relied predominantly on [this guide to ECS](https://austinmorlan.com/posts/entity_component_system/), which provides excellent explanation and a concrete implementation approach. I have been improving the model so that it suits the needs of this project.
 
-For more details about the implementation of ECS used in this game, refer to [this file](docs/README-ECS.md).
+For more details about the implementation of ECS used in this game, refer to [this file](src/Core/README.md).
 
 ## TODO
  - Load background image (or not).
@@ -51,7 +51,7 @@ For more details about the implementation of ECS used in this game, refer to [th
  - Resolve TODO entries in all header and source files.
 
 ## Third-party libraries
- - [SDL2 and its plugins (SDL_image, SDL_ttf, SDL_mixer)](docs/README-SDL.txt)  
+ - [SDL2 and its plugins (SDL_image, SDL_ttf, SDL_mixer)](bin/README-SDL.txt)  
 
 ## Licensing
 Copyright (C) 2023 Vu Tung Lam <vutunglaminfo@gmail.com>  
